@@ -17,11 +17,14 @@ module.exports = {
     new webpack.NoEmitOnErrorsPlugin()
   ],
   module: {
-    loaders: [
-    {
+    loaders: [{
       test: /\.js$/,
       loaders: ['babel-loader'],
       include: path.join(__dirname, 'client')
+    }, {
+      test: /\.styl$/,
+      include: path.join(__dirname, 'client'),
+      loaders: ['style-loader', 'css-loader', 'stylus-loader']
     }]
   }
 };

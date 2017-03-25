@@ -1,4 +1,4 @@
-function currentLetter(state = null, action) {
+function currentLetter(state = '', action) {
   switch(action.type) {
     case 'NEXT_LETTER':
       return action.letter;

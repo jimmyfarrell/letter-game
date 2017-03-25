@@ -1,14 +1,20 @@
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
+import { pick } from 'underscore';
+
 import * as actionCreators from '../actions';
 import Main from './Main';
 
 function mapStateToProps(state) {
-  return {
-    letters: state.letters,
-    currentLetter: state.currentLetter,
-    sortBy: state.sortBy
-  };
+  const props = [
+    'currentLetter',
+    'letterCase',
+    'letterStyle',
+    'letters',
+    'sortBy',
+    'soundStyle'
+  ];
+  return pick(state, ...props);
 }
 
 function mapDispatchToProps(dispatch) {

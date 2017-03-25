@@ -7,9 +7,12 @@ import rootReducer from './reducers';
 import letters from './data/letters';
 
 const defaultState = {
-  letters,
-  currentLetter: letters[0],
-  sortBy: 'alphabetical'
+  currentLetter: letters.uppercase[0],
+  letterCase: 'uppercase',
+  letterStyle: 'normal',
+  letters: letters.uppercase,
+  sortBy: 'alphabetical',
+  soundStyle: 'name'
 };
 
 const store = createStore(rootReducer, defaultState);

@@ -1,10 +1,11 @@
 import { shuffle } from 'underscore';
 
-import sortedLetters from '../data/letters';
+import lettersData from '../data/letters';
 
 function letters(state = [], action) {
   switch (action.type) {
     case 'SORT_LETTERS_BY':
+      const sortedLetters = lettersData[action.letterCase];
       return action.sortBy === 'shuffle' ? shuffle(sortedLetters) : sortedLetters;
     default:
       return state;

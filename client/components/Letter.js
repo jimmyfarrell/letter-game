@@ -1,12 +1,14 @@
 import React from 'react';
-import { findIndex, throttle } from 'underscore';
+import { indexOf } from 'underscore';
 
-import sounds from '../data/miscSounds';
+import { letterImages } from '../data/images';
+import { letterSounds, gameSounds } from '../data/sounds';
 
 const Letter = React.createClass({
   _audios: {
     letter: null,
-    tryAgain: null
+    tryAgain: null,
+    win: null
   },
 
   _generateAudio(type, audioURL) {
@@ -15,48 +17,71 @@ const Letter = React.createClass({
   },
 
   _handleKeydown(e) {
-    const { currentLetter, letters, sortBy } = this.props;
-    const { nextLetter, sortLettersBy } = this.props;
+    const { currentLetter } = this.props;
 
-    if (e.key.toLowerCase() === currentLetter.character.toLowerCase()) {
-      let newIndex = findIndex(letters, currentLetter) + 1;
-
-      if (newIndex === letters.length) {
-        newIndex = 0;
-
-        if (sortBy === 'shuffle') {
-          sortLettersBy(sortBy);
-        }
-      }
-
-      nextLetter(letters[newIndex]);
+    if (e.key.toLowerCase() === currentLetter.toLowerCase()) {
+      this._audios.win.play();
     } else {
       if (this._audios.tryAgain.paused) {
         this._audios.tryAgain.play();
-        this._audios.tryAgain.addEventListener('ended', function() {
-          this._audios.letter.play();
-        }.bind(this))
       }
     }
   },
 
+  _showNextLetter(props) {
+    const { currentLetter, letters } = props;
+    const { nextLetter, sortLettersBy } = props;
+    const newIndex = indexOf(letters, currentLetter) + 1;
+
+    if (newIndex === letters.length) {
+      if (sortBy === 'shuffle') {
+        sortLettersBy(sortBy);
+      } else {
+        nextLetter(letters[0]);
+      }
+    } else {
+      nextLetter(letters[newIndex]);
+    }
+
+  },
+
   componentWillMount() {
-    this._generateAudio('tryAgain', sounds.tryAgain);
+    this._generateAudio('tryAgain', gameSounds.tryAgain);
+    this._audios.tryAgain.addEventListener('ended', function() {
+      this._audios.letter.play();
+    }.bind(this));
+
+    this._generateAudio('win', gameSounds.win);
+    this._audios.win.addEventListener('ended', function() {
+      this._showNextLetter(this.props);
+    }.bind(this));
+
     document.addEventListener('keydown', this._handleKeydown);
   },
 
   componentDidMount() {
-    const { audioURL } = this.props.currentLetter;
+    const { currentLetter, soundStyle } = this.props;
+    const audioURL = letterSounds[currentLetter.toLowerCase()][soundStyle];
     const letterAudio = this._generateAudio('letter', audioURL);
     letterAudio.play();
   },
 
   componentWillReceiveProps(nextProps) {
-    if (this.props.currentLetter === nextProps.currentLetter &&
-      this.props.sortBy === nextProps.sortBy) return;
-    const { audioURL } = nextProps.currentLetter;
-    const letterAudio = this._generateAudio('letter', audioURL);
-    letterAudio.play();
+    const { currentLetter, letters, sortBy, soundStyle } = this.props;
+    const { nextLetter } = this.props;
+    const {
+      currentLetter: nextCurrentLetter,
+      letters: nextLetters,
+      sortBy: nextSortBy
+    } = nextProps;
+
+    if (letters !== nextLetters) {
+      this.props.nextLetter(nextLetters[0]);
+    } else if (currentLetter !== nextCurrentLetter) {
+      const audioURL = letterSounds[nextCurrentLetter.toLowerCase()][soundStyle];
+      const letterAudio = this._generateAudio('letter', audioURL);
+      letterAudio.play();
+    }
   },
 
   componentWillUnmount() {
@@ -64,16 +89,30 @@ const Letter = React.createClass({
   },
 
   render() {
-    const { character, imageURL } = this.props.currentLetter;
+    const { currentLetter, letterCase, letterStyle } = this.props;
+    const textStyle = {
+      textAlign: 'center'
+    };
+    const characterStyle = {
+      fontWeight: 'bold'
+    };
+    const imgStyle = {
+      display: 'block',
+      margin: 'auto'
+    };
 
     return (
       <div className="letter">
         <figure className="letter-image">
-          <figcaption>
-            Find the letter { character }.
-          </figcaption>
+          <h2 style={ textStyle }>
+            Press the
+            <span style={ characterStyle }> "{ currentLetter }" </span>
+            key on the keyboard.
+          </h2>
           <div className="letter-image-wrapper">
-            <img src={imageURL} />
+            <img
+              src={ letterImages[currentLetter][letterCase][letterStyle] }
+              style={ imgStyle } />
           </div>
         </figure>
       </div>
