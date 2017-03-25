@@ -7,7 +7,7 @@ const letterImages = {};
 each(letters.uppercase, (letter) => {
   letterImages[letter] = {
     uppercase: {
-      normal: 'http://placehold.it/500x500'
+      normal: `https://s3.amazonaws.com/letter-game/images/letters/uppercase/normal/${letter.toLowerCase()}.png`
     }
   };
 });

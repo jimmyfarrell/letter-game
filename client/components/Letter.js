@@ -1,5 +1,5 @@
 import React from 'react';
-import { indexOf } from 'underscore';
+import { indexOf, sample } from 'underscore';
 
 import { letterImages } from '../data/images';
 import { letterSounds, gameSounds } from '../data/sounds';
@@ -29,7 +29,7 @@ const Letter = React.createClass({
   },
 
   _showNextLetter(props) {
-    const { currentLetter, letters } = props;
+    const { currentLetter, letters, sortBy } = props;
     const { nextLetter, sortLettersBy } = props;
     const newIndex = indexOf(letters, currentLetter) + 1;
 
@@ -90,6 +90,12 @@ const Letter = React.createClass({
 
   render() {
     const { currentLetter, letterCase, letterStyle } = this.props;
+    const letterColorOptions =
+      ['#c61516', '#75517c', '#7ab929', '#204987', '#c4a003', '#5d3566',
+       '#3466a5', '#f8ae3e', '#a51916', '#8fc035', '#ce5d15', '#8f5a14',
+       '#e63423', '#fbe050', '#739fd0', '#ef790e', '#ac7ea7', '#4d9c34'];
+    const letterColor = sample(letterColorOptions);
+
     const textStyle = {
       textAlign: 'center'
     };
@@ -100,9 +106,28 @@ const Letter = React.createClass({
       display: 'block',
       margin: 'auto'
     };
+    const blockBorderStyle = {
+      margin: 'auto',
+      height: '400px',
+      width: '400px',
+      borderStyle: 'solid',
+      borderColor: letterColor,
+      borderWidth: '40px',
+      borderRadius: '70px'
+    };
+    const letterWrapperStyle = {
+      fontFamily: 'Noto Serif, serif',
+      fontSize: '350px',
+      color: letterColor,
+      height: '100%',
+      width: '100%',
+      margin: 'auto',
+      textAlign: 'center',
+      lineHeight: '400px'
+    };
 
     return (
-      <div className="letter">
+      <div className="letter" key={ 0 }>
         <figure className="letter-image">
           <h2 style={ textStyle }>
             Press the
@@ -110,9 +135,11 @@ const Letter = React.createClass({
             key on the keyboard.
           </h2>
           <div className="letter-image-wrapper">
-            <img
-              src={ letterImages[currentLetter][letterCase][letterStyle] }
-              style={ imgStyle } />
+            <div className="block-border" style={ blockBorderStyle }>
+              <div className="letter-wrapper" style= { letterWrapperStyle }>
+                { currentLetter }
+              </div>
+            </div>
           </div>
         </figure>
       </div>
