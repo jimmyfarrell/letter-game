@@ -3,7 +3,7 @@ const path = require('path');
 const webpack = require('webpack');
 
 const app = express();
-const webpackConfig = require('../webpack.config');
+const webpackConfig = require('../webpack.config.dev');
 const compiler = webpack(webpackConfig);
 
 app.use(require('webpack-dev-middleware')(compiler, {
