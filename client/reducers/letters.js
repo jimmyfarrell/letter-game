@@ -4,7 +4,7 @@ import lettersData from '../data/letters';
 
 function letters(state = [], action) {
   switch (action.type) {
-    case 'SORT_LETTERS_BY':
+    case 'CHANGE_SORT_BY':
       const sortedLetters = lettersData[action.letterCase];
       return action.sortBy === 'shuffle' ? shuffle(sortedLetters) : sortedLetters;
     default:

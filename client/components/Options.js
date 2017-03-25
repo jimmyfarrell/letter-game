@@ -1,15 +1,20 @@
 import React from 'react';
+import Modal from 'react-modal';
 import Toggle from 'react-toggle';
 import { extend } from 'underscore';
 
 const Options = React.createClass({
+  _closeOptionsPanel() {
+    const { toggleOptions } = this.props;
+    toggleOptions();
+    this._handleSortToggle(this.refs.sort.state.checked);
+  },
 
-  _handleSortToggle(e) {
-    const { letterCase, sortLettersBy } = this.props;
-    sortLettersBy(
-      e.currentTarget.checked ? 'shuffle' : 'alphabetical',
-      letterCase
-    );
+  _handleSortToggle(checked) {
+    const { options: { letterCase, sortBy }, changeSortBy } = this.props;
+    const newSortBy = checked ? 'shuffle' : 'alphabetical';
+    if (newSortBy === sortBy) return;
+    changeSortBy(newSortBy, letterCase);
   },
 
   _handleCaseToggle(e) {
@@ -22,45 +27,80 @@ const Options = React.createClass({
   },
 
   render() {
-    const { letterCase, letterStyle, sortBy, soundStyle } = this.props;
-    const divStyle = { float: 'left' };
+    const {
+      letterCase,
+      letterStyle,
+      showOptions,
+      sortBy,
+      soundStyle
+    } = this.props.options;
+    const { toggleOptions } = this.props;
+    const cogStyle = {
+      marginLeft: '15px',
+      position: 'fixed',
+      top: '15px',
+      cursor: 'pointer'
+    };
+    const xStyle = { cursor: 'pointer' };
+    const divStyle = { padding: '10px' };
     const labelStyle = { height: '100%' };
     const textStyle = {
       display: 'block',
       verticalAlign: 'middle',
-      marginBottom: '10px'
+      marginBottom: '10px',
+      marginTop: '10px'
+    };
+    const modalStyle = {
+      content: {
+        width: '300px',
+        height: '300px'
+      }
     };
 
     return (
-      <div style={ divStyle }>
-        <label style={ labelStyle }>
-          <span style={ textStyle }>Shuffle Letters</span>
-          <Toggle
-            defaultChecked={ sortBy === 'shuffle' }
-            onChange={ this._handleSortToggle }
-          />
-        </label>
-        <label style={ extend({ display: 'none' }, labelStyle) }>
-          <Toggle
-            defaultChecked={ letterCase === 'lowercase' }
-            onChange={ this._handleCaseToggle }
-          />
-          <span style={ textStyle }>Lowercase</span>
-        </label>
-        <label style={ extend({ display: 'none' }, labelStyle) }>
-          <Toggle
-            defaultChecked={ letterStyle === 'wacky' }
-            onChange={ this._handleLetterStyleToggle }
-          />
-          <span style={ textStyle }>Letter Style</span>
-        </label>
-        <label style={ extend({ display: 'none' }, labelStyle) }>
-          <Toggle
-            defaultChecked={ soundStyle === 'makes' }
-            onChange={ this._handleSoundStyleToggle }
-          />
-          <span style={ textStyle }>Sound Style</span>
-        </label>
+      <div>
+        <i
+          className="fa fa-cog fa-3x"
+          aria-hidden="true"
+          onClick={ toggleOptions }
+          style= { cogStyle }></i>
+        <Modal
+          isOpen={ showOptions }
+          contentLabel="Options"
+          style={ modalStyle }>
+          <div style={ divStyle }>
+            <i
+              className="fa fa-times fa-2x"
+              aria-hidden="true"
+              onClick={ this._closeOptionsPanel }
+              style={ xStyle }></i>
+            <h2>Options</h2>
+            <label style={ labelStyle }>
+              <span style={ textStyle }>Shuffle Letters</span>
+              <Toggle
+                defaultChecked={ sortBy === 'shuffle' }
+                ref="sort"/>
+            </label>
+            <label style={ extend({ display: 'none' }, labelStyle) }>
+              <Toggle
+                defaultChecked={ letterCase === 'lowercase' }
+                onChange={ this._handleCaseToggle } />
+              <span style={ textStyle }>Lowercase</span>
+            </label>
+            <label style={ extend({ display: 'none' }, labelStyle) }>
+              <Toggle
+                defaultChecked={ letterStyle === 'wacky' }
+                onChange={ this._handleLetterStyleToggle } />
+              <span style={ textStyle }>Letter Style</span>
+            </label>
+            <label style={ extend({ display: 'none' }, labelStyle) }>
+              <Toggle
+                defaultChecked={ soundStyle === 'makes' }
+                onChange={ this._handleSoundStyleToggle } />
+              <span style={ textStyle }>Sound Style</span>
+            </label>
+          </div>
+        </Modal>
       </div>
     );
   }

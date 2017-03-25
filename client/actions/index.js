@@ -1,21 +1,27 @@
-export function nextLetter(letter) {
+export function toggleOptions() {
   return {
-    type: 'NEXT_LETTER',
+    type: 'TOGGLE_OPTIONS'
+  };
+};
+
+export function changeLetter(letter) {
+  return {
+    type: 'CHANGE_LETTER',
     letter
   };
 };
 
-export function sortLettersBy(sortBy, letterCase) {
+export function changeSortBy(sortBy, letterCase) {
   return {
-    type: 'SORT_LETTERS_BY',
+    type: 'CHANGE_SORT_BY',
     sortBy,
     letterCase
   };
 };
 
-export function changeCase(letterCase) {
+export function changeLetterCase(letterCase) {
   return {
-    type: 'CHANGE_CASE',
+    type: 'CHANGE_LETTER_CASE',
     letterCase
   };
 };

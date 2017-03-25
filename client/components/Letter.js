@@ -29,18 +29,18 @@ const Letter = React.createClass({
   },
 
   _showNextLetter(props) {
-    const { currentLetter, letters, sortBy } = props;
-    const { nextLetter, sortLettersBy } = props;
+    const { currentLetter, letters, options: { sortBy, letterCase } } = props;
+    const { changeLetter, changeSortBy } = props;
     const newIndex = indexOf(letters, currentLetter) + 1;
 
     if (newIndex === letters.length) {
       if (sortBy === 'shuffle') {
-        sortLettersBy(sortBy);
+        changeSortBy(sortBy, letterCase);
       } else {
-        nextLetter(letters[0]);
+        changeLetter(letters[0]);
       }
     } else {
-      nextLetter(letters[newIndex]);
+      changeLetter(letters[newIndex]);
     }
 
   },
@@ -60,23 +60,25 @@ const Letter = React.createClass({
   },
 
   componentDidMount() {
-    const { currentLetter, soundStyle } = this.props;
+    const { currentLetter, options } = this.props;
+    const { soundStyle } = options;
     const audioURL = letterSounds[currentLetter.toLowerCase()][soundStyle];
     const letterAudio = this._generateAudio('letter', audioURL);
     letterAudio.play();
   },
 
   componentWillReceiveProps(nextProps) {
-    const { currentLetter, letters, sortBy, soundStyle } = this.props;
-    const { nextLetter } = this.props;
+    const { currentLetter, letters, options } = this.props;
+    const { showOptions, sortBy, soundStyle } = options;
+    const { changeLetter } = this.props;
     const {
       currentLetter: nextCurrentLetter,
       letters: nextLetters,
-      sortBy: nextSortBy
+      options: { nextShowOptions }
     } = nextProps;
 
     if (letters !== nextLetters) {
-      this.props.nextLetter(nextLetters[0]);
+      changeLetter(nextLetters[0]);
     } else if (currentLetter !== nextCurrentLetter) {
       const audioURL = letterSounds[nextCurrentLetter.toLowerCase()][soundStyle];
       const letterAudio = this._generateAudio('letter', audioURL);
@@ -89,13 +91,13 @@ const Letter = React.createClass({
   },
 
   render() {
-    const { currentLetter, letterCase, letterStyle } = this.props;
+    const { currentLetter, options } = this.props;
+    const { letterStyle, letterCase } = options;
     const letterColorOptions =
       ['#c61516', '#75517c', '#7ab929', '#204987', '#c4a003', '#5d3566',
        '#3466a5', '#f8ae3e', '#a51916', '#8fc035', '#ce5d15', '#8f5a14',
        '#e63423', '#fbe050', '#739fd0', '#ef790e', '#ac7ea7', '#4d9c34'];
     const letterColor = sample(letterColorOptions);
-
     const textStyle = {
       textAlign: 'center'
     };
@@ -116,7 +118,7 @@ const Letter = React.createClass({
       borderRadius: '70px'
     };
     const letterWrapperStyle = {
-      fontFamily: 'Noto Serif, serif',
+      fontFamily: 'Times New Roman, Times, serif',
       fontSize: '350px',
       color: letterColor,
       height: '100%',

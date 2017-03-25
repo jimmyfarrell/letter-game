@@ -8,11 +8,8 @@ import Main from './Main';
 function mapStateToProps(state) {
   const props = [
     'currentLetter',
-    'letterCase',
-    'letterStyle',
     'letters',
-    'sortBy',
-    'soundStyle'
+    'options',
   ];
   return pick(state, ...props);
 }

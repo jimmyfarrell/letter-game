@@ -2,19 +2,13 @@ import { combineReducers } from 'redux';
 import { routerReducer } from 'react-router-redux';
 
 import currentLetter from './currentLetter';
-import letterCase from './letterCase';
-import letterStyle from './letterStyle';
 import letters from './letters';
-import sortBy from './sortBy';
-import soundStyle from './soundStyle';
+import options from './options';
 
 const rootReducer = combineReducers({
   currentLetter,
-  letterCase,
-  letterStyle,
   letters,
-  sortBy,
-  soundStyle,
+  options,
   routing: routerReducer
 });
 
