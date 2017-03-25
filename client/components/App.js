@@ -5,6 +5,9 @@ import Main from './Main';
 
 function mapStateToProps(state) {
   return {
+    letters: state.letters,
+    currentLetter: state.currentLetter,
+    sortBy: state.sortBy
   };
 }
 

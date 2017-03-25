@@ -2,6 +2,9 @@ import React from 'react';
 import { withRouter } from 'react-router'
 import { push } from 'react-router-redux';
 
+import Letter from './Letter';
+import Options from './Options';
+
 class Layout extends React.Component {
   constructor(){
     super();
@@ -10,6 +13,8 @@ class Layout extends React.Component {
   render() {
     return (
       <div>
+        <Options { ...this.props } />
+        <Letter { ...this.props } />
       </div>
     );
   }
