@@ -7,11 +7,6 @@ const port = process.env.PORT || 3000;
 
 if (process.env.NODE_ENV === 'production') {
   app.use('/static', express.static('dist'))
-
-  const http = require('http');
-  setInterval(function() {
-    http.get('https://learn-letters-game.herokuapp.com');
-  }, 300000);
 } else {
   const webpackConfig = require('../webpack.config.dev');
   const compiler = webpack(webpackConfig);
