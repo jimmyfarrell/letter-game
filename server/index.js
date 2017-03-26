@@ -3,15 +3,13 @@ const path = require('path');
 const webpack = require('webpack');
 
 const app = express();
-let port = 8080;
+const port = process.env.PORT || 3000;
 
 if (process.env.NODE_ENV === 'production') {
   app.use('/static', express.static('dist'))
 } else {
   const webpackConfig = require('../webpack.config.dev');
   const compiler = webpack(webpackConfig);
-
-  port = 3000;
 
   app.use(require('webpack-dev-middleware')(compiler, {
     noInfo: true,
