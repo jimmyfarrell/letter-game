@@ -39,8 +39,6 @@ const Video = React.createClass({
           onClick={ this._closeVideo }
           style={ xStyle }></i>
         <iframe
-          width="853"
-          height="480"
           style={ iframeStyle }
           src={ `${videoURL}?autoplay=1` }
           frameBorder="0"

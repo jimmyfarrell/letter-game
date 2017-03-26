@@ -41,7 +41,12 @@ const Options = React.createClass({
       top: '15px',
       cursor: 'pointer'
     };
-    const xStyle = { cursor: 'pointer' };
+    const xStyle = {
+      cursor: 'pointer',
+      position: 'relative',
+      top: -32,
+      left: -25
+    };
     const divStyle = { padding: '10px' };
     const labelStyle = { height: '100%' };
     const textStyle = {
@@ -52,10 +57,13 @@ const Options = React.createClass({
     };
     const modalStyle = {
       content: {
-        width: '300px',
-        height: '300px'
+        width: '200px',
+        height: '200px'
       }
     };
+    const modalTitleStyle = {
+      marginTop: '-30px'
+    }
 
     return (
       <div>
@@ -70,11 +78,11 @@ const Options = React.createClass({
           style={ modalStyle }>
           <div style={ divStyle }>
             <i
-              className="fa fa-times fa-2x"
+              className="fa fa-times"
               aria-hidden="true"
               onClick={ this._closeOptionsPanel }
               style={ xStyle }></i>
-            <h2>Options</h2>
+            <h2 style={ modalTitleStyle }>Options</h2>
             <label style={ labelStyle }>
               <span style={ textStyle }>Shuffle Letters</span>
               <Toggle
