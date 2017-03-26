@@ -1,5 +1,7 @@
 # Letter Game
 
+![Letter Game Screenshot](https://cloud.githubusercontent.com/assets/8833417/24331498/a78ac546-1203-11e7-9cb7-0f3085dfa870.png)
+
 https://learn-letters-game.herokuapp.com/
 
 This is a simple web game to help children learn to identify letters. A letter
