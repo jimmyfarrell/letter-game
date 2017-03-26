@@ -1,4 +1,6 @@
 import React from 'react';
+import ReactDOM from 'react-dom';
+import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 import { contains, range, sample } from 'underscore';
 
 import { letterImages } from '../data/images';
@@ -150,22 +152,30 @@ const Letter = React.createClass({
     };
 
     return (
-      <div className="letter" key={ 0 }>
-        <figure className="letter-image">
-          <h2 style={ textStyle }>
-            Press the
-            <span style={ characterStyle }> "{ currentLetter }" </span>
-            key on the keyboard.
-          </h2>
-          <div className="letter-image-wrapper">
-            <div className="block-border" style={ blockBorderStyle }>
-              <div className="letter-wrapper" style= { letterWrapperStyle }>
-                { currentLetter }
+      <ReactCSSTransitionGroup
+        key={ currentLetter }
+        transitionName="letter"
+        transitionAppear={ true }
+        transitionAppearTimeout={ 1000 }
+        transitionEnterTimeout={ 1000 }
+        transitionLeaveTimeout={ 1000 }>
+        <div className="letter" key={ currentLetter } ref="letter">
+          <figure className="letter-image">
+            <h2 style={ textStyle }>
+              Press the
+              <span style={ characterStyle }> "{ currentLetter }" </span>
+              key on the keyboard.
+            </h2>
+            <div className="letter-image-wrapper">
+              <div className="block-border" style={ blockBorderStyle }>
+                <div className="letter-wrapper" style= { letterWrapperStyle }>
+                  { currentLetter }
+                </div>
               </div>
             </div>
-          </div>
-        </figure>
-      </div>
+          </figure>
+        </div>
+      </ReactCSSTransitionGroup>
     );
   }
 });
