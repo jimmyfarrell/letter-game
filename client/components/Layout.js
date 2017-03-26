@@ -4,6 +4,7 @@ import { withRouter } from 'react-router'
 import Letter from './Letter';
 import Options from './Options';
 import Score from './Score';
+import Video from './Video';
 
 class Layout extends React.Component {
   constructor(){
@@ -11,11 +12,16 @@ class Layout extends React.Component {
   }
 
   render() {
+    const { score } = this.props;
+
     return (
       <div>
         <Options { ...this.props } />
         <Score { ...this.props } />
         <Letter { ...this.props } />
+        {score === 26 &&
+          <Video { ...this.props } />
+        }
       </div>
     );
   }

@@ -25,3 +25,11 @@ export function changeSoundStyle(soundStyle) {
 export function incrementScore() {
   return { type: 'INCREMENT_SCORE' };
 };
+
+export function winGame() {
+  return { type: 'WIN_GAME' };
+};
+
+export function startOver() {
+  return { type: 'START_OVER' };
+};

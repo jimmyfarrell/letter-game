@@ -7,7 +7,7 @@ const Score = React.createClass({
       position: 'fixed',
       top: '15px',
       right: '30px',
-      fontSize: '50px'
+      fontSize: '30px'
     };
 
     return (

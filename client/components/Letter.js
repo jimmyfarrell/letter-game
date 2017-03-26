@@ -33,12 +33,10 @@ const Letter = React.createClass({
 
   _handleKeydown(e) {
     const { currentLetterIndex, letters } = this.props;
-    const { incrementScore } = this.props;
     const currentLetter = letters[currentLetterIndex].toLowerCase();
     const letterPressed = String.fromCharCode(e.keyCode).toLowerCase();
 
     if (currentLetter === letterPressed) {
-      incrementScore();
       this._audios.correct.play();
     } else {
       if (this._audios.incorrect.paused) {
@@ -49,12 +47,13 @@ const Letter = React.createClass({
 
   _showNextLetter() {
     const { currentLetterIndex, letters } = this.props;
-    const { changeLetter } = this.props;
+    const { changeLetter, incrementScore, winGame } = this.props;
 
     if (currentLetterIndex + 1 === letters.length) {
-      // WINNING!
+      winGame();
     } else {
       changeLetter();
+      incrementScore();
     }
   },
 
@@ -66,14 +65,15 @@ const Letter = React.createClass({
 
     const incorrectAudio = this._updateAudio('incorrect');
     incorrectAudio.addEventListener('ended', function() {
-      this._showNextLetter();
+      this._audios.letter.play();
     }.bind(this));
 
     document.addEventListener('keydown', this._handleKeydown);
   },
 
   componentDidMount() {
-    this._updateAudio('letter');
+    const letterAudio = this._updateAudio('letter');
+    letterAudio.play();
   },
 
   shouldComponentUpdate(nextProps) {
