@@ -7,7 +7,6 @@ const gameSounds = {
   incorrect: 'https://s3.amazonaws.com/letter-game/audio/game/try-again.wav',
   get correct() {
     return sample([
-      'https://s3.amazonaws.com/letter-game/audio/game/nice-job.wav',
       'https://s3.amazonaws.com/letter-game/audio/game/applause.mp3',
       'https://s3.amazonaws.com/letter-game/audio/game/yay.wav'
     ]);
