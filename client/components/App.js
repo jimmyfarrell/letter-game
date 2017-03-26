@@ -8,6 +8,7 @@ import Main from './Main';
 function mapStateToProps(state) {
   const props = [
     'currentLetterIndex',
+    'fireworks',
     'letters',
     'options',
     'score'

@@ -1,6 +1,7 @@
 import React from 'react';
 import { withRouter } from 'react-router'
 
+import Fireworks from './Fireworks';
 import Letter from './Letter';
 import Options from './Options';
 import Score from './Score';
@@ -18,6 +19,7 @@ class Layout extends React.Component {
       <div>
         <Options { ...this.props } />
         <Score { ...this.props } />
+        <Fireworks { ...this.props } />
         <Letter { ...this.props } />
         {score === 26 &&
           <Video { ...this.props } />

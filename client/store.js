@@ -8,15 +8,16 @@ import letters from './data/letters';
 
 const defaultState = {
   currentLetterIndex: 0,
+  fireworks: false,
   letters: letters.uppercase,
   options: {
     letterCase: 'uppercase',
     letterStyle: 'normal',
-    score: 0,
     showOptions: false,
     sortBy: 'alphabetical',
     soundStyle: 'name'
-  }
+  },
+  score: 0
 };
 
 const store = createStore(rootReducer, defaultState);

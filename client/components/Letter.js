@@ -32,8 +32,11 @@ const Letter = React.createClass({
   },
 
   _updateGameSounds() {
+    const { hideFireworks } = this.props;
+
     const correctAudio = this._updateAudio('correct');
     correctAudio.addEventListener('ended', function() {
+      hideFireworks();
       this._showNextLetter();
     }.bind(this));
 
@@ -46,11 +49,13 @@ const Letter = React.createClass({
 
   _handleKeydown(e) {
     const { currentLetterIndex, letters } = this.props;
+    const { showFireworks } = this.props;
     const currentLetter = letters[currentLetterIndex].toLowerCase();
     const letterPressed = String.fromCharCode(e.keyCode).toLowerCase();
 
     if (currentLetter === letterPressed) {
       this._generateAudio('incorrect', '');
+      showFireworks();
       this._audios.correct.play();
     } else {
       if (this._audios.incorrect.paused) {

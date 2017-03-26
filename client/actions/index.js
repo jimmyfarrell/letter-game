@@ -33,3 +33,11 @@ export function winGame() {
 export function startOver() {
   return { type: 'START_OVER' };
 };
+
+export function showFireworks() {
+  return { type: 'SHOW_FIREWORKS' };
+};
+
+export function hideFireworks() {
+  return { type: 'HIDE_FIREWORKS' };
+};
