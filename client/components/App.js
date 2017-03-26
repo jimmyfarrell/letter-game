@@ -7,9 +7,10 @@ import Main from './Main';
 
 function mapStateToProps(state) {
   const props = [
-    'currentLetter',
+    'currentLetterIndex',
     'letters',
     'options',
+    'score'
   ];
   return pick(state, ...props);
 }

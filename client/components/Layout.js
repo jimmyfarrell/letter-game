@@ -1,9 +1,9 @@
 import React from 'react';
 import { withRouter } from 'react-router'
-import { push } from 'react-router-redux';
 
 import Letter from './Letter';
 import Options from './Options';
+import Score from './Score';
 
 class Layout extends React.Component {
   constructor(){
@@ -14,6 +14,7 @@ class Layout extends React.Component {
     return (
       <div>
         <Options { ...this.props } />
+        <Score { ...this.props } />
         <Letter { ...this.props } />
       </div>
     );

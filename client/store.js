@@ -7,11 +7,12 @@ import rootReducer from './reducers';
 import letters from './data/letters';
 
 const defaultState = {
-  currentLetter: letters.uppercase[0],
+  currentLetterIndex: 0,
   letters: letters.uppercase,
   options: {
     letterCase: 'uppercase',
     letterStyle: 'normal',
+    score: 0,
     showOptions: false,
     sortBy: 'alphabetical',
     soundStyle: 'name'

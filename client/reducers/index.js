@@ -1,14 +1,16 @@
 import { combineReducers } from 'redux';
 import { routerReducer } from 'react-router-redux';
 
-import currentLetter from './currentLetter';
+import currentLetterIndex from './currentLetterIndex';
 import letters from './letters';
 import options from './options';
+import score from './score';
 
 const rootReducer = combineReducers({
-  currentLetter,
+  currentLetterIndex,
   letters,
   options,
+  score,
   routing: routerReducer
 });
 

@@ -17,9 +17,11 @@ const Letter = React.createClass({
   },
 
   _handleKeydown(e) {
-    const { currentLetter } = this.props;
+    const { currentLetterIndex, letters } = this.props;
+    const { incrementScore } = this.props;
 
-    if (e.key.toLowerCase() === currentLetter.toLowerCase()) {
+    if (e.key.toLowerCase() === letters[currentLetterIndex].toLowerCase()) {
+      incrementScore();
       this._audios.win.play();
     } else {
       if (this._audios.tryAgain.paused) {
@@ -29,20 +31,14 @@ const Letter = React.createClass({
   },
 
   _showNextLetter(props) {
-    const { currentLetter, letters, options: { sortBy, letterCase } } = props;
-    const { changeLetter, changeSortBy } = props;
-    const newIndex = indexOf(letters, currentLetter) + 1;
+    const { currentLetterIndex, letters } = props;
+    const { changeLetter } = props;
 
-    if (newIndex === letters.length) {
-      if (sortBy === 'shuffle') {
-        changeSortBy(sortBy, letterCase);
-      } else {
-        changeLetter(letters[0]);
-      }
+    if (currentLetterIndex + 1 === letters.length) {
+      // WINNING!
     } else {
-      changeLetter(letters[newIndex]);
+      changeLetter();
     }
-
   },
 
   componentWillMount() {
@@ -60,30 +56,40 @@ const Letter = React.createClass({
   },
 
   componentDidMount() {
-    const { currentLetter, options } = this.props;
+    const { currentLetterIndex, letters, options } = this.props;
     const { soundStyle } = options;
+    const currentLetter = letters[currentLetterIndex];
     const audioURL = letterSounds[currentLetter.toLowerCase()][soundStyle];
     const letterAudio = this._generateAudio('letter', audioURL);
     letterAudio.play();
   },
 
   componentWillReceiveProps(nextProps) {
-    const { currentLetter, letters, options } = this.props;
+    const { currentLetterIndex, letters, options } = this.props;
     const { showOptions, sortBy, soundStyle } = options;
     const { changeLetter } = this.props;
     const {
-      currentLetter: nextCurrentLetter,
+      currentLetterIndex: nextCurrentLetterIndex,
       letters: nextLetters,
       options: { nextShowOptions }
     } = nextProps;
+    const currentLetter = letters[currentLetterIndex];
+    const nextCurrentLetter = nextLetters[nextCurrentLetterIndex];
 
-    if (letters !== nextLetters) {
-      changeLetter(nextLetters[0]);
-    } else if (currentLetter !== nextCurrentLetter) {
+    if (currentLetter !== nextCurrentLetter) {
       const audioURL = letterSounds[nextCurrentLetter.toLowerCase()][soundStyle];
       const letterAudio = this._generateAudio('letter', audioURL);
       letterAudio.play();
     }
+  },
+
+  shouldComponentUpdate(nextProps) {
+    const { currentLetterIndex, letters } = this.props;
+    const {
+      currentLetterIndex: nextCurrentLetterIndex,
+      letters: nextLetters
+    } = nextProps;
+    return letters[currentLetterIndex] !== nextLetters[nextCurrentLetterIndex];
   },
 
   componentWillUnmount() {
@@ -91,8 +97,9 @@ const Letter = React.createClass({
   },
 
   render() {
-    const { currentLetter, options } = this.props;
+    const { currentLetterIndex, letters, options } = this.props;
     const { letterStyle, letterCase } = options;
+    const currentLetter = letters[currentLetterIndex];
     const letterColorOptions =
       ['#c61516', '#75517c', '#7ab929', '#204987', '#c4a003', '#5d3566',
        '#3466a5', '#f8ae3e', '#a51916', '#8fc035', '#ce5d15', '#8f5a14',
