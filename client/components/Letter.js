@@ -31,12 +31,26 @@ const Letter = React.createClass({
     return this._generateAudio(type, audioURL);
   },
 
+  _updateGameSounds() {
+    const correctAudio = this._updateAudio('correct');
+    correctAudio.addEventListener('ended', function() {
+      this._showNextLetter();
+    }.bind(this));
+
+    const incorrectAudio = this._updateAudio('incorrect');
+    incorrectAudio.addEventListener('ended', function() {
+      this._audios.letter.play();
+    }.bind(this));
+
+  },
+
   _handleKeydown(e) {
     const { currentLetterIndex, letters } = this.props;
     const currentLetter = letters[currentLetterIndex].toLowerCase();
     const letterPressed = String.fromCharCode(e.keyCode).toLowerCase();
 
     if (currentLetter === letterPressed) {
+      this._generateAudio('incorrect', '');
       this._audios.correct.play();
     } else {
       if (this._audios.incorrect.paused) {
@@ -58,16 +72,7 @@ const Letter = React.createClass({
   },
 
   componentWillMount() {
-    const correctAudio = this._updateAudio('correct');
-    correctAudio.addEventListener('ended', function() {
-      this._showNextLetter();
-    }.bind(this));
-
-    const incorrectAudio = this._updateAudio('incorrect');
-    incorrectAudio.addEventListener('ended', function() {
-      this._audios.letter.play();
-    }.bind(this));
-
+    this._updateGameSounds();
     document.addEventListener('keydown', this._handleKeydown);
   },
 
@@ -88,11 +93,7 @@ const Letter = React.createClass({
   componentDidUpdate() {
     const letterAudio = this._updateAudio('letter');
     letterAudio.play();
-
-    this._updateAudio('correct');
-      this._audios.correct.addEventListener('ended', function() {
-        this._showNextLetter();
-      }.bind(this));
+    this._updateGameSounds();
   },
 
   componentWillUnmount() {
