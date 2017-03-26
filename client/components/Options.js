@@ -11,10 +11,10 @@ const Options = React.createClass({
   },
 
   _handleSortToggle(checked) {
-    const { options: { letterCase, sortBy }, changeSortBy } = this.props;
+    const { options: { sortBy }, changeSortBy } = this.props;
     const newSortBy = checked ? 'shuffle' : 'alphabetical';
     if (newSortBy === sortBy) return;
-    changeSortBy(newSortBy, letterCase);
+    changeSortBy(newSortBy);
   },
 
   _handleCaseToggle(e) {

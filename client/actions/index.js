@@ -6,8 +6,8 @@ export function changeLetter(letter) {
   return { type: 'CHANGE_LETTER', letter };
 };
 
-export function changeSortBy(sortBy, letterCase) {
-  return { type: 'CHANGE_SORT_BY', sortBy, letterCase };
+export function changeSortBy(sortBy) {
+  return { type: 'CHANGE_SORT_BY', sortBy };
 };
 
 export function changeLetterCase(letterCase) {
