@@ -1,5 +1,5 @@
 import React from 'react';
-import { indexOf, sample } from 'underscore';
+import { contains, range, sample } from 'underscore';
 
 import { letterImages } from '../data/images';
 import { letterSounds, gameSounds } from '../data/sounds';
@@ -48,6 +48,9 @@ const Letter = React.createClass({
   },
 
   _handleKeydown(e) {
+    const keyCodes = range(48, 91).concat(range(186, 193), range(219, 223));
+    if (!contains(keyCodes, e.keyCode)) return;
+
     const { currentLetterIndex, letters } = this.props;
     const { showFireworks } = this.props;
     const currentLetter = letters[currentLetterIndex].toLowerCase();
