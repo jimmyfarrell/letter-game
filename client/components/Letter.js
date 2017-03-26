@@ -7,8 +7,8 @@ import { letterSounds, gameSounds } from '../data/sounds';
 const Letter = React.createClass({
   _audios: {
     letter: null,
-    tryAgain: null,
-    win: null
+    correct: null,
+    incorrect: null
   },
 
   _generateAudio(type, audioURL) {
@@ -16,23 +16,40 @@ const Letter = React.createClass({
     return this._audios[type];
   },
 
+  _updateAudio(type) {
+    let audioURL;
+
+    if (type === 'letter') {
+      const { currentLetterIndex, letters, options } = this.props;
+      const { soundStyle } = options;
+      const currentLetter = letters[currentLetterIndex];
+      audioURL = letterSounds[currentLetter.toLowerCase()][soundStyle];
+    } else if (type.includes('correct')) {
+      audioURL = gameSounds[type];
+    }
+
+    return this._generateAudio(type, audioURL);
+  },
+
   _handleKeydown(e) {
     const { currentLetterIndex, letters } = this.props;
     const { incrementScore } = this.props;
+    const currentLetter = letters[currentLetterIndex].toLowerCase();
+    const letterPressed = String.fromCharCode(e.keyCode).toLowerCase();
 
-    if (e.key.toLowerCase() === letters[currentLetterIndex].toLowerCase()) {
+    if (currentLetter === letterPressed) {
       incrementScore();
-      this._audios.win.play();
+      this._audios.correct.play();
     } else {
-      if (this._audios.tryAgain.paused) {
-        this._audios.tryAgain.play();
+      if (this._audios.incorrect.paused) {
+        this._audios.incorrect.play();
       }
     }
   },
 
-  _showNextLetter(props) {
-    const { currentLetterIndex, letters } = props;
-    const { changeLetter } = props;
+  _showNextLetter() {
+    const { currentLetterIndex, letters } = this.props;
+    const { changeLetter } = this.props;
 
     if (currentLetterIndex + 1 === letters.length) {
       // WINNING!
@@ -42,45 +59,21 @@ const Letter = React.createClass({
   },
 
   componentWillMount() {
-    this._generateAudio('tryAgain', gameSounds.tryAgain);
-    this._audios.tryAgain.addEventListener('ended', function() {
-      this._audios.letter.play();
+    const correctAudio = this._updateAudio('correct');
+    correctAudio.addEventListener('ended', function() {
+      this._showNextLetter();
     }.bind(this));
 
-    this._generateAudio('win', gameSounds.win);
-    this._audios.win.addEventListener('ended', function() {
-      this._showNextLetter(this.props);
+    const incorrectAudio = this._updateAudio('incorrect');
+    incorrectAudio.addEventListener('ended', function() {
+      this._showNextLetter();
     }.bind(this));
 
     document.addEventListener('keydown', this._handleKeydown);
   },
 
   componentDidMount() {
-    const { currentLetterIndex, letters, options } = this.props;
-    const { soundStyle } = options;
-    const currentLetter = letters[currentLetterIndex];
-    const audioURL = letterSounds[currentLetter.toLowerCase()][soundStyle];
-    const letterAudio = this._generateAudio('letter', audioURL);
-    letterAudio.play();
-  },
-
-  componentWillReceiveProps(nextProps) {
-    const { currentLetterIndex, letters, options } = this.props;
-    const { showOptions, sortBy, soundStyle } = options;
-    const { changeLetter } = this.props;
-    const {
-      currentLetterIndex: nextCurrentLetterIndex,
-      letters: nextLetters,
-      options: { nextShowOptions }
-    } = nextProps;
-    const currentLetter = letters[currentLetterIndex];
-    const nextCurrentLetter = nextLetters[nextCurrentLetterIndex];
-
-    if (currentLetter !== nextCurrentLetter) {
-      const audioURL = letterSounds[nextCurrentLetter.toLowerCase()][soundStyle];
-      const letterAudio = this._generateAudio('letter', audioURL);
-      letterAudio.play();
-    }
+    this._updateAudio('letter');
   },
 
   shouldComponentUpdate(nextProps) {
@@ -90,6 +83,16 @@ const Letter = React.createClass({
       letters: nextLetters
     } = nextProps;
     return letters[currentLetterIndex] !== nextLetters[nextCurrentLetterIndex];
+  },
+
+  componentDidUpdate() {
+    const letterAudio = this._updateAudio('letter');
+    letterAudio.play();
+
+    this._updateAudio('correct');
+      this._audios.correct.addEventListener('ended', function() {
+        this._showNextLetter();
+      }.bind(this));
   },
 
   componentWillUnmount() {
