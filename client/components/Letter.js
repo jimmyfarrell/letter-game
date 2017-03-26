@@ -54,6 +54,7 @@ const Letter = React.createClass({
     const letterPressed = String.fromCharCode(e.keyCode).toLowerCase();
 
     if (currentLetter === letterPressed) {
+      this._audios.incorrect.pause();
       this._generateAudio('incorrect', '');
       showFireworks();
       this._audios.correct.play();
