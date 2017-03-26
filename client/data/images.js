@@ -12,4 +12,8 @@ each(letters.uppercase, (letter) => {
   };
 });
 
-export { letterImages };
+const miscImages = {
+  fireworks: 'https://s3.amazonaws.com/letter-game/images/fireworks.gif',
+};
+
+export { miscImages, letterImages };

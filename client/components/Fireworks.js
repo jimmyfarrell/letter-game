@@ -1,13 +1,15 @@
 import React from 'react';
 
+import { miscImages } from '../data/images';
+
 const Fireworks = React.createClass({
   render() {
     const { fireworks } = this.props;
 
     const divStyle = {
-      backgroundImage: "url('https://s3.amazonaws.com/letter-game/images/fireworks.gif')",
-      height: '300px',
-      width: '300px',
+      backgroundImage: `url(${miscImages.fireworks})`,
+      height: '600px',
+      width: '600px',
       position: 'absolute',
       zIndex: 1000,
       margin: 'auto',
