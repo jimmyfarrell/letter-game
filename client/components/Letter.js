@@ -126,7 +126,8 @@ const Letter = React.createClass({
       borderStyle: 'solid',
       borderColor: letterColor,
       borderWidth: '40px',
-      borderRadius: '70px'
+      borderRadius: '70px',
+      backgroundColor: '#fff'
     };
     const letterWrapperStyle = {
       fontFamily: 'Times New Roman, Times, serif',

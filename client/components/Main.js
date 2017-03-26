@@ -5,7 +5,8 @@ import { Link } from 'react-router';
 const Main = React.createClass({
   render() {
     const titleStyle = {
-      textAlign: 'center'
+      textAlign: 'center',
+      fontSize: '45px'
     };
 
     return (
