@@ -10,7 +10,8 @@ const Letter = React.createClass({
   _audios: {
     letter: null,
     correct: null,
-    incorrect: null
+    incorrect: null,
+    transition: null
   },
 
   _generateAudio(type, audioURL) {
@@ -36,6 +37,11 @@ const Letter = React.createClass({
   _updateGameSounds() {
     const { hideFireworks } = this.props;
 
+    const transitionAudio = this._generateAudio('transition', gameSounds.ding);
+    transitionAudio.addEventListener('ended', function() {
+      this._audios.letter.play();
+    }.bind(this));
+
     const correctAudio = this._updateAudio('correct');
     correctAudio.addEventListener('ended', function() {
       hideFireworks();
@@ -46,7 +52,6 @@ const Letter = React.createClass({
     incorrectAudio.addEventListener('ended', function() {
       this._audios.letter.play();
     }.bind(this));
-
   },
 
   _handleKeydown(e) {
@@ -89,7 +94,7 @@ const Letter = React.createClass({
 
   componentDidMount() {
     const letterAudio = this._updateAudio('letter');
-    letterAudio.play();
+    this._audios.transition.play();
   },
 
   shouldComponentUpdate(nextProps) {
@@ -102,9 +107,9 @@ const Letter = React.createClass({
   },
 
   componentDidUpdate() {
-    const letterAudio = this._updateAudio('letter');
-    letterAudio.play();
+    this._updateAudio('letter');
     this._updateGameSounds();
+    this._audios.transition.play();
   },
 
   componentWillUnmount() {
