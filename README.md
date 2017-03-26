@@ -15,3 +15,4 @@ correctly identified, a video pop up is displayed.
 1. Clone this repo
 1. Run `npm install` to install dependencies
 1. Run `npm start` to start the server
+1. Browse to `localhost:3000`
