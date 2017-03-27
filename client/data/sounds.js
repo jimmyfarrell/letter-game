@@ -17,7 +17,7 @@ const letterSounds = {};
 
 each(letters.lowercase, (letter) => {
   letterSounds[letter] = {
-    name: `https://s3.amazonaws.com/letter-game/audio/letters/name/${letter}.mp3`,
+    name: `https://s3.amazonaws.com/letter-game/audio/letters/name/${letter}.wav`,
     makes: ''
   };
 });
