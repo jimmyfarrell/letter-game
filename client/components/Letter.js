@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
-import { contains, range, sample } from 'underscore';
+import { contains, findIndex, range, sample } from 'underscore';
 
 import { letterImages } from '../data/images';
 import { letterSounds, gameSounds } from '../data/sounds';
@@ -59,11 +59,16 @@ const Letter = React.createClass({
     if (!contains(keyCodes, e.keyCode)) return;
 
     const { currentLetterIndex, letters } = this.props;
-    const { showFireworks } = this.props;
+    const { changeLetter, showFireworks } = this.props;
     const currentLetter = letters[currentLetterIndex].toLowerCase();
     const letterPressed = String.fromCharCode(e.keyCode).toLowerCase();
 
-    if (currentLetter === letterPressed) {
+    if (e.ctrlKey && contains(range(48, 91), e.keyCode)) {
+      const newLetterIndex = findIndex(letters, (letter) => {
+        return letter.toLowerCase() === String.fromCharCode(e.keyCode).toLowerCase();
+      });
+      changeLetter(newLetterIndex);
+    } else if (currentLetter === letterPressed) {
       this._audios.incorrect.pause();
       this._generateAudio('incorrect', '');
       showFireworks();
@@ -76,10 +81,10 @@ const Letter = React.createClass({
   },
 
   _showNextLetter() {
-    const { currentLetterIndex, letters } = this.props;
+    const { currentLetterIndex, letters, score } = this.props;
     const { changeLetter, incrementScore, winGame } = this.props;
 
-    if (currentLetterIndex + 1 === letters.length) {
+    if (score + 1 === letters.length) {
       winGame();
     } else {
       changeLetter();

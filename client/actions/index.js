@@ -2,8 +2,8 @@ export function toggleOptions() {
   return { type: 'TOGGLE_OPTIONS' };
 };
 
-export function changeLetter(letter) {
-  return { type: 'CHANGE_LETTER', letter };
+export function changeLetter(letterIndex = null) {
+  return { type: 'CHANGE_LETTER', letterIndex };
 };
 
 export function changeSortBy(sortBy) {
