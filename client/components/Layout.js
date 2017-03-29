@@ -20,10 +20,8 @@ class Layout extends React.Component {
         <Options { ...this.props } />
         <Score { ...this.props } />
         <Fireworks { ...this.props } />
-        <Letter { ...this.props } />
-        {score === 26 &&
-          <Video { ...this.props } />
-        }
+        { score < 26 && <Letter { ...this.props } /> }
+        { score === 26 && <Video { ...this.props } /> }
       </div>
     );
   }

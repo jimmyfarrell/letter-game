@@ -55,15 +55,17 @@ const Letter = React.createClass({
   },
 
   _handleKeydown(e) {
-    const keyCodes = range(48, 91).concat(range(186, 193), range(219, 223));
+    const keyCodes = range(48, 91).concat(range(186, 193), range(219, 223), 8);
     if (!contains(keyCodes, e.keyCode)) return;
 
     const { currentLetterIndex, letters } = this.props;
-    const { changeLetter, showFireworks } = this.props;
+    const { changeLetter, showFireworks, winGame } = this.props;
     const currentLetter = letters[currentLetterIndex].toLowerCase();
     const letterPressed = String.fromCharCode(e.keyCode).toLowerCase();
 
-    if (e.ctrlKey && contains(range(48, 91), e.keyCode)) {
+    if (e.ctrlKey && e.keyCode === 8) {
+      winGame();
+    } else if (e.ctrlKey && contains(range(48, 91), e.keyCode)) {
       const newLetterIndex = findIndex(letters, (letter) => {
         return letter.toLowerCase() === String.fromCharCode(e.keyCode).toLowerCase();
       });
