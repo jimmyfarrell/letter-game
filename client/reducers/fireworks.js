@@ -1,10 +1,14 @@
 function fireworks(state = false, action) {
-  if (action.type === 'SHOW_FIREWORKS') {
-    return true;
-  } else if (action.type === 'HIDE_FIREWORKS') {
-    return false;
-  } else {
-    return state;
+  switch (action.type) {
+    case 'SHOW_FIREWORKS':
+      return true;
+    case 'HIDE_FIREWORKS':
+    case 'WIN_GAME':
+    case 'CHANGE_SORT_BY':
+    case 'CHANGE_LETTER':
+      return false;
+    default:
+      return state;
   }
 }
 

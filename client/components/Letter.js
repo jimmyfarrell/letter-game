@@ -35,23 +35,27 @@ const Letter = React.createClass({
   },
 
   _updateGameSounds() {
-    const { hideFireworks } = this.props;
-
     const transitionAudio = this._generateAudio('transition', gameSounds.ding);
-    transitionAudio.addEventListener('ended', function() {
-      this._audios.letter.play();
-    }.bind(this));
+    transitionAudio.addEventListener('ended', this._playLetterSound);
 
     const correctAudio = this._updateAudio('correct');
-    correctAudio.addEventListener('ended', function() {
-      hideFireworks();
-      this._showNextLetter();
-    }.bind(this));
+    correctAudio.addEventListener('ended', this._showNextLetter);
 
     const incorrectAudio = this._updateAudio('incorrect');
-    incorrectAudio.addEventListener('ended', function() {
-      this._audios.letter.play();
-    }.bind(this));
+    incorrectAudio.addEventListener('ended', this._playLetterSound);
+  },
+
+  _removeAudioEventListeners() {
+    this._audios.transition.removeEventListener('ended', this._playLetterSound);
+    this._audios.correct.removeEventListener('ended', this._showNextLetter);
+    this._audios.incorrect.removeEventListener('ended', this._playLetterSound);
+  },
+
+  _pauseAllAudios() {
+    this._audios.transition.pause();
+    this._audios.correct.pause();
+    this._audios.incorrect.pause();
+    this._audios.letter.pause();
   },
 
   _handleKeydown(e) {
@@ -82,9 +86,15 @@ const Letter = React.createClass({
     }
   },
 
+  _playLetterSound() {
+    this._audios.letter.play();
+  },
+
   _showNextLetter() {
     const { currentLetterIndex, letters, score } = this.props;
-    const { changeLetter, incrementScore, winGame } = this.props;
+    const { changeLetter, hideFireworks, incrementScore, winGame } = this.props;
+
+    hideFireworks();
 
     if (score + 1 === letters.length) {
       winGame();
@@ -113,6 +123,11 @@ const Letter = React.createClass({
     return letters[currentLetterIndex] !== nextLetters[nextCurrentLetterIndex];
   },
 
+  componentWillUpdate() {
+    this._pauseAllAudios();
+    this._removeAudioEventListeners();
+  },
+
   componentDidUpdate() {
     this._updateAudio('letter');
     this._updateGameSounds();
@@ -121,6 +136,8 @@ const Letter = React.createClass({
 
   componentWillUnmount() {
     document.removeEventListener('keydown', this._handleKeydown);
+    this._pauseAllAudios();
+    this._removeAudioEventListeners();
   },
 
   render() {
