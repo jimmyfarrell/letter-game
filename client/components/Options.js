@@ -108,6 +108,7 @@ const Options = React.createClass({
               <span style={ textStyle }>Sound Style</span>
             </label>
           </div>
+          <p>Press CTRL + letter to skip to that letter.</p>
         </Modal>
       </div>
     );
